@@ -1,14 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext,useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../Assets/logo.png';
 import cart_icon from '../Assets/cart_icon.png';
 import { ShopContext } from '../../context/ShopContext';
+import nav_dropdown from "../Assets/dropdown_icon.png";
 
 const Navbar = () => {
   const location = useLocation(); // Get the current route
   const [menu, setMenu] = useState('');
   const {getTotalCartItems}=useContext(ShopContext);
+  const menuRef =useRef();
+
+  const dropdown_toggle=(e)=>{
+      menuRef.current.classList.toggle('nav-menu-visible');
+      e.target.classList.toggle('open');
+  }
 
   // Set active menu item based on URL path
   useEffect(() => {
@@ -25,7 +32,9 @@ const Navbar = () => {
           <img src={logo} alt="" />
           <p>SHOPPER</p>
         </div>
-        <ul className="nav-menu">
+    <img onClick={dropdown_toggle} src={nav_dropdown} alt="" className="nav-dropdown" />
+
+        <ul ref={menuRef} className="nav-menu">
           <li>
             <Link
               style={{ textDecoration: 'none' }}
